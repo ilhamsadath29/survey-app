@@ -39,10 +39,16 @@ const router = createRouter({
 
 // Login check
 router.beforeEach((to, from, next) => {
+    // Login page redirect
     if (to.meta.requiresAuth && !store.state.user.token) {
         next({name: 'Login'})
-    } else {
-        next()
+    } 
+    // if user exit redirect dashboard page
+    else if (store.state.user.token && (to.name === 'Login' || to.name === 'Register')) {
+        next({name: 'Dashboard'})
+    }
+    else {
+        next();
     }
 })
 
