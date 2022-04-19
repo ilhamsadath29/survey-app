@@ -135,6 +135,7 @@ const store = createStore({
               expire_date: "2021-12-31 00:00:00",
             },
           ],
+        questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
     },
     getters: {},
     actions: {
