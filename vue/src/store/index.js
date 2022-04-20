@@ -195,6 +195,9 @@ const store = createStore({
               throw err;
             }
           );
+        },
+        deleteSurvey({}, id) {
+          axiosClient.delete(`/survey/${id}`);
         }
     },
     mutations: {

@@ -98,6 +98,13 @@ class SurveyController extends Controller
         }
 
         $survey->delete();
+
+        // image delete
+        if ($survey->image) {
+            $absolutePath = public_path($survey->image);
+            File::delete($absolutePath);
+        }
+
         return response('', 204);
     }
 
