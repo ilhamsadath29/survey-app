@@ -29,10 +29,10 @@
         <div class="grid gap-3 grid-cols-12">
             <!-- Question -->
             <div class="mt-3 col-span-9">
-                <label :for="'question_text_'+model.data" class="block text-sm font-medium text-gray-700">
+                <label :for="'question_text_'+model.id" class="block text-sm font-medium text-gray-700">
                     Question Text
                 </label>
-                <input type="text" :name="'question_text_'+model.data" v-model="model.question" :id="'question_text_'+model.data" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                <input type="text" :name="'question_text_'+model.data" v-model="model.question" @change="dataChange" :id="'question_text_'+model.id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
             </div>
             <!-- /Question -->
 
@@ -52,9 +52,9 @@
         
         <!-- Question Description -->
         <div class="mt-3 col-span-9">
-            <label for="question_description" class="block text-sm font-medium text-gray-700"> Question Description </label>
+            <label class="block text-sm font-medium text-gray-700" :for="'question_description_'+model.id"> Question Description </label>
             <div class="mt-1">
-                <textarea id="question_description" name="question_description" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                <textarea v-model="model.description" name="question_description" @change="dataChange" :id="'question_description_'+model.id" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
             </div>
                 <!-- <p class="mt-2 text-sm text-gray-500">Brief description for your profile. URLs are hyperlinked.</p> -->
         </div>
@@ -169,7 +169,7 @@ import store from '../../store';
     }
 
     function deleteQuestion() {
-        emit("addQuestion", props.question);
+        emit("deleteQuestion", props.question);
     }
 </script>
 
