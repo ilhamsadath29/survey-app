@@ -12,11 +12,30 @@
       </div>
     </template>
     <div v-if="surveys.loading" class="flex justify-center">Loading...</div>
-    <div v-else class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-      <SurveyListItem v-for="(survey, index) in surveys.data" :key="survey.id" 
-        class="opacity-0 animate-fade-in-down"
-        :style="{animationDelay: `${index*0.1}s`}"
-       :survey="survey" @delete="deleteSurvey(survey)" />
+    <div v-else>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+        <SurveyListItem v-for="(survey, index) in surveys.data" :key="survey.id" 
+          class="opacity-0 animate-fade-in-down"
+          :style="{animationDelay: `${index*0.1}s`}"
+        :survey="survey" @delete="deleteSurvey(survey)" />
+      </div>
+
+      <div class="flex justify-center mt-5">
+        <nav class="relative z-0 inline-flex justify-center rounded-md shadow-sm" 
+          aria-label="pagination">
+          <a v-for="(link, i) in surveys.paginationLinks" :key="i" :disabled="!link.url" v-html="link.label"
+            href="#" @click="getForPage($event, link)" aria-current="page" class="relative inline-flex items-center px-4 py-2 border text-sm font-medium whitespace-nowrap"
+            :class="[
+              link.active 
+                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50',
+              i === 0 ? 'rounded-l-md' : '',
+              i === surveys.paginationLinks.length - 1 ? 'rounded-r-md' : '',
+            ]">
+            
+          </a>
+        </nav>
+      </div>
     </div>
   </PageComponent>
 </template>
@@ -40,5 +59,13 @@ function deleteSurvey(survey) {
       router.push({name: 'Surveys'})
     )
   }
+}
+
+function getForPage(ev, link) {
+  ev.preventDefault();
+  if(!link.url || link.active) {
+    return;
+  } 
+  store.dispatch("getSurveys", { url: link.url} );
 }
 </script>
