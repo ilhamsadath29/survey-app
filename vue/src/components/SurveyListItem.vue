@@ -6,7 +6,7 @@
 
         <div class="flex justify-between items-center mt-3">
           <router-link :to="{name: 'SurveyView', params: {id: survey.id}}" 
-            class="flex py-2 px-4 border border-transparent text-sm rounded-md bg-indigo-600 hover:bg-indigo-700 
+            class="flex py-2 px-4 text-white border border-transparent text-sm rounded-md bg-indigo-600 hover:bg-indigo-700 
             focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
