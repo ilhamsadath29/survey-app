@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SurveyAnswer extends Model
 {
     use HasFactory;
+    
+    // public $timestamp = false;
+    const CREATED_AT = null;
+    const UPDATED_AT = null;
+
+    protected $fillable = ['survey_id', 'start_date', 'end_date'];
 }

@@ -7,7 +7,7 @@ const store = createStore({
       data: {},
       token: sessionStorage.getItem('TOKEN')
     },
-    currentSurrey: {
+    currentSurvey: {
       loading: false,
       data: {}
     },
@@ -89,7 +89,23 @@ const store = createStore({
     },
     deleteSurvey({ }, id) {
       axiosClient.delete(`/survey/${id}`);
-    }
+    },
+    getSurveyBySlug({ commit }, slug) {
+      commit("setCurrentSurveyLoading", true);
+      return axiosClient.get(
+        `/survey-by-slug/${slug}`
+        ).then((res) => {
+          commit("setCurrentSurvey", res.data)
+          commit("setCurrentSurveyLoading", false);
+          return res;
+        }).catch((err) => {
+          commit("setCurrentSurveyLoading", false);
+          throw err;
+        });
+    },
+    saveSurveyAnswer({ commit }, {surveyId, answers}) {
+      return axiosClient.post(`/survey/${surveyId}/answer`, {answers});
+    },
   },
   mutations: {
     logout: (state) => {
@@ -102,10 +118,10 @@ const store = createStore({
       sessionStorage.setItem('TOKEN', userData.token);
     },
     setCurrentSurveyLoading: (state, loading) => {
-      state.currentSurrey.loading = loading;
+      state.currentSurvey.loading = loading;
     },
     setCurrentSurvey: (state, survey) => {
-      state.currentSurrey.data = survey.data;
+      state.currentSurvey.data = survey.data;
     },
     setSurveyLoading: (state, loading) => {
       state.surveys.loading = loading;

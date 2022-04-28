@@ -116,7 +116,7 @@ import QuestionEditor from '../components/editor/QuestionEditor.vue';
 const router = useRouter();
 const route = useRoute();
 
-const surveyLoading = computed(() => store.state.currentSurrey.loading);
+const surveyLoading = computed(() => store.state.currentSurvey.loading);
 
 let model = ref({
     title: "",
@@ -129,7 +129,7 @@ let model = ref({
 
 // Get current survey data
 watch(
-    () => store.state.currentSurrey.data, (newVal, oldVal) => {
+    () => store.state.currentSurvey.data, (newVal, oldVal) => {
         model.value = {
             ...JSON.parse(JSON.stringify(newVal)),
             status: newVal.status !== "draft",
