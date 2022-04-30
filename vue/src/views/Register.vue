@@ -16,8 +16,17 @@
                 >Login to your account</router-link>
             </p>
         </div>
+
+
         <form class="mt-8 space-y-6" @submit="register">
-            <input type="hidden" name="remember" value="true" />
+             <Alert v-if="Object.keys(errors).length" class="flex-col items-stretch text-sm">
+                 <div v-for="(field, i) in  Object.keys(errors)" :key="i">
+                     <div v-for="(error, ind) in errors[field] || []" :key="ind">
+                        {{ error }}
+                     </div>
+                 </div>
+            </Alert>
+
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
                     <label for="fullname" class="sr-only">Email address</label>
@@ -74,9 +83,10 @@
             </div>
 
             <div>
-                <button
+                <button :disabled="loading"
                     type="submit"
                     class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    :class="{'cursor-not-allowed': loading, 'hover:bg-indigo-500': loading}"
                 >
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                         <LockClosedIcon
@@ -84,6 +94,21 @@
                             aria-hidden="true"
                         />
                     </span>
+                     <svg
+                        v-if="loading"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
                     Sign up
                 </button>
             </div>
@@ -95,6 +120,8 @@
 import { LockClosedIcon } from "@heroicons/vue/solid";
 import store from "../store";
 import { useRouter } from "vue-router";
+import { ref } from "@vue/reactivity";
+import Alert from '../components/Alert.vue'
 
 const router = useRouter();
 
@@ -105,12 +132,23 @@ const user = {
     password_confirmation: "",
 };
 
+const loading = ref(false);
+const errors = ref({});
+
 function register(ev) {
     ev.preventDefault();
+    loading.value = true;
     store.dispatch("register", user).then((res) => {
+        loading.value = false;
+
         router.push({
             name: "Dashboard",
         });
+    }).catch((err) => {
+        if (err.response.status === 422) {
+            loading.value = false;
+            errors.value = err.response.data.errors;
+        }
     });
 }
 </script>
